@@ -43,22 +43,21 @@ def inicio_sesion(self):
     return driver
 
 
-def mesANumero(x):  # Funcion que devuelve el numero de mes introducido de manera escrita
+def numero_a_mes(x):  # Funcion que devuelve el numero de mes introducido de manera escrita
     return{
-        'enero': "01",
-        'febrero': "02",
-        'marzo': "03",
-        'abril': "04",
-        'mayo': "05",
-        'junio': "06",
-        'julio': "07",
-        'agosto': "08",
-        'septiembre': "09",
-        'octubre': "10",
-        'noviembre': "11",
-        'diciembre': "12",
+        '1': "enero",
+        '2': "febrero",
+        '3': "marzo",
+        '4': "abril",
+        '5': "mayo",
+        '6': "junio",
+        '7': "julio",
+        '8': "agosto",
+        '9': "septiembre",
+        '10': "octubre",
+        '11': "noviembre",
+        '12': "diciembre",
     }[x]
-
 
 # Funcion para dar formato a una fecha y devolverla en la respuesta
 def formatear_fecha(fecha_a_formatear):
@@ -86,7 +85,7 @@ class EventosHoyCampus(MycroftSkill):
         numero_dia = date.today().day
         numero_mes = date.today().month
         numero_anio = date.today().year
-        fecha_a_buscar = str(numero_dia) + " de " + str(numero_mes) + " del " + str(numero_anio)
+        fecha_a_buscar = str(numero_dia) + " de " + numero_a_mes(numero_mes) + " del " + str(numero_anio)
 
 
         # Obtencion de la lista de eventos del dia
@@ -112,7 +111,7 @@ class EventosHoyCampus(MycroftSkill):
                 with open(ficheroJSON) as ficheroEventos:
                     data = json.load(ficheroEventos)
                     for event in data['eventos']:
-                        self.speak("Hoy a las " + event['fecha'] + " tienes " + event['nombre'])
+                        self.speak("Hoy a las " + event['hora'] + " tienes " + event['nombre'])
 
         # # Obtencion del numero de eventos del dia
         # numero_eventos = len(eventos_dia)
