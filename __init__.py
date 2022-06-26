@@ -108,10 +108,10 @@ class EventosHoyCampus(MycroftSkill):
                 json.dump(informacion, ficheroDatos, indent=4)
 
             # Lectura de la informacion del fichero JSON
-                with open(ficheroJSON) as ficheroEventos:
-                    data = json.load(ficheroEventos)
-                    for event in data['eventos']:
-                        self.speak("Hoy a las " + event['hora'] + " tienes " + event['nombre'])
+            with open(ficheroJSON) as ficheroEventos:
+                data = json.load(ficheroEventos)
+                for event in data['eventos']:
+                    self.speak("Hoy a las " + event['hora'] + " tienes " + event['nombre'])
 
         # # Obtencion del numero de eventos del dia
         # numero_eventos = len(eventos_dia)
