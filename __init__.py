@@ -1,4 +1,5 @@
 import time
+import json
 
 from mycroft import MycroftSkill, intent_file_handler
 from selenium import webdriver
@@ -6,6 +7,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from datetime import datetime
 from datetime import date
+
+# Fichero JSON donde almacenar la informacion
+ficheroJSON = "/home/serggom/data.json"
+informacion = {'asignaturas': [], 'usuario': [], 'eventos': [], 'mensajes': []}
 
 
 def inicio_sesion(self):
@@ -74,28 +79,52 @@ class EventosHoyCampus(MycroftSkill):
         # Acceso al dia actual en el calendario
         driver.get('https://campusvirtual.uva.es/calendar/view.php?view=day')
 
+        numero_dia = date.today().day
+        numero_mes = date.today().month
+        numero_anio = date.today().year
+        fecha_a_buscar = str(numero_dia) + " de " + str(numero_mes) + " del " + str(numero_anio)
+
+
         # Obtencion de la lista de eventos del dia
         eventos_dia = driver.find_elements(by=By.CLASS_NAME, value='event')
 
-        # Obtencion del numero de eventos del dia
-        numero_eventos = len(eventos_dia)
+        # Almacenamiento de la informacion en el fichero JSON
+        for evento in eventos_dia:
+            informacion['eventos'].append({
+                'nombre': evento.find_element(by=By.TAG_NAME, value='h3').text,
+                'fecha': fecha_a_buscar,
+                'hora': formatear_fecha(evento.find_element(by=By.CLASS_NAME, value='col-11').text.split(
+                " » ")[0])
+            })
 
-        # Respuesta con los eventos del dia
-        if numero_eventos == 0:
-            self.speak("Hoy no tienes ningun evento")
+        with open(ficheroJSON, 'w') as ficheroDatos:
+            json.dump(informacion, ficheroDatos, indent=4)
 
-        elif numero_eventos == 1:
-            self.speak_dialog('Hoy tienes un evento')
-            evento_dia = eventos_dia[0]
-            self.speak(formatear_fecha(evento_dia.find_element(by=By.CLASS_NAME, value='col-11').text.split(
-                " » ")[0]) + " tienes " + evento_dia.find_element(by=By.TAG_NAME, value='h3').text)
+        # Lectura de la informacion del fichero JSON
+            with open(ficheroJSON) as ficheroEventos:
+                data = json.load(ficheroEventos)
+                for event in data['eventos']:
+                    self.speak("Hoy a las " + event['fecha'] + " tienes " + event['nombre'])
 
-        else:
-            self.speak_dialog('uva.hoy.eventos', data={
-                'numero_eventos': numero_eventos})
-            for evento_dia in eventos_dia:
-                self.speak(formatear_fecha(evento_dia.find_element(by=By.CLASS_NAME, value='col-11').text.split(
-                    " » ")[0]) + " tienes " + evento_dia.find_element(by=By.TAG_NAME, value='h3').text)
+        # # Obtencion del numero de eventos del dia
+        # numero_eventos = len(eventos_dia)
+
+        # # Respuesta con los eventos del dia
+        # if numero_eventos == 0:
+        #     self.speak("Hoy no tienes ningun evento")
+
+        # elif numero_eventos == 1:
+        #     self.speak_dialog('Hoy tienes un evento')
+        #     evento_dia = eventos_dia[0]
+        #     self.speak(formatear_fecha(evento_dia.find_element(by=By.CLASS_NAME, value='col-11').text.split(
+        #         " » ")[0]) + " tienes " + evento_dia.find_element(by=By.TAG_NAME, value='h3').text)
+
+        # else:
+        #     self.speak_dialog('uva.hoy.eventos', data={
+        #         'numero_eventos': numero_eventos})
+        #     for evento_dia in eventos_dia:
+        #         self.speak(formatear_fecha(evento_dia.find_element(by=By.CLASS_NAME, value='col-11').text.split(
+        #             " » ")[0]) + " tienes " + evento_dia.find_element(by=By.TAG_NAME, value='h3').text)
 
 
 def create_skill():
