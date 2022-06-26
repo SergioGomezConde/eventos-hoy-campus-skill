@@ -88,23 +88,27 @@ class EventosHoyCampus(MycroftSkill):
         # Obtencion de la lista de eventos del dia
         eventos_dia = driver.find_elements(by=By.CLASS_NAME, value='event')
 
-        # Almacenamiento de la informacion en el fichero JSON
-        for evento in eventos_dia:
-            informacion['eventos'].append({
-                'nombre': evento.find_element(by=By.TAG_NAME, value='h3').text,
-                'fecha': fecha_a_buscar,
-                'hora': formatear_fecha(evento.find_element(by=By.CLASS_NAME, value='col-11').text.split(
-                " » ")[0])
-            })
+        if len(eventos_dia) == 0:
+            self.speak("Hoy no tienes ningún evento")
 
-        with open(ficheroJSON, 'w') as ficheroDatos:
-            json.dump(informacion, ficheroDatos, indent=4)
+        else:
+            # Almacenamiento de la informacion en el fichero JSON
+            for evento in eventos_dia:
+                informacion['eventos'].append({
+                    'nombre': evento.find_element(by=By.TAG_NAME, value='h3').text,
+                    'fecha': fecha_a_buscar,
+                    'hora': formatear_fecha(evento.find_element(by=By.CLASS_NAME, value='col-11').text.split(
+                    " » ")[0])
+                })
 
-        # Lectura de la informacion del fichero JSON
-            with open(ficheroJSON) as ficheroEventos:
-                data = json.load(ficheroEventos)
-                for event in data['eventos']:
-                    self.speak("Hoy a las " + event['fecha'] + " tienes " + event['nombre'])
+            with open(ficheroJSON, 'w') as ficheroDatos:
+                json.dump(informacion, ficheroDatos, indent=4)
+
+            # Lectura de la informacion del fichero JSON
+                with open(ficheroJSON) as ficheroEventos:
+                    data = json.load(ficheroEventos)
+                    for event in data['eventos']:
+                        self.speak("Hoy a las " + event['fecha'] + " tienes " + event['nombre'])
 
         # # Obtencion del numero de eventos del dia
         # numero_eventos = len(eventos_dia)
