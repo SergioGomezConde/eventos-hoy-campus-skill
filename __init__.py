@@ -104,7 +104,7 @@ class EventosHoyCampus(MycroftSkill):
                     " » ")[0])
                 })
 
-            with open(ficheroJSON, 'w') as ficheroDatos:
+            with open(ficheroJSON, 'w+') as ficheroDatos:
                 json.dump(informacion, ficheroDatos, indent=4)
 
             # Lectura de la informacion del fichero JSON
