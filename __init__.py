@@ -85,7 +85,7 @@ class EventosHoyCampus(MycroftSkill):
         numero_dia = date.today().day
         numero_mes = date.today().month
         numero_anio = date.today().year
-        fecha_a_buscar = str(numero_dia) + " de " + numero_a_mes(str(numero_mes)) + " del " + str(numero_anio)
+        fecha_a_buscar = str(numero_dia) + "/" + str(numero_mes) + "/" + str(numero_anio)
 
 
         # Obtencion de la lista de eventos del dia
