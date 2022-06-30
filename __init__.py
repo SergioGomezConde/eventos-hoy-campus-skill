@@ -3,10 +3,10 @@ import json
 import os
 
 from mycroft import MycroftSkill, intent_file_handler
+from datetime import datetime
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
 # from selenium.webdriver.common.by import By
-# from datetime import datetime
 # from datetime import date
 
 # Fichero JSON donde almacenar la informacion
@@ -116,7 +116,10 @@ class EventosHoyCampus(MycroftSkill):
                 data = json.load(ficheroEventos)
                 if len(data['siguiente_evento']) > 0:
                     for event in data['eventos_hoy']:
-                        self.speak("Hoy a las " + event['hora'] + " tienes " + event['nombre'])
+                        hora = int(event['hora'].split(":")[0])
+                        minuto = int(event['hora'].split(":")[1])
+                        if((hora > date.today().hour) or ((hora == date.today().hour) and (hora > date.today().minute))):
+                            self.speak("Hoy a las " + event['hora'] + " tienes " + event['nombre'])
                         
                 else:
                     self.speak("Hoy no tienes ningún evento")
