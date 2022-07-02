@@ -39,6 +39,9 @@ class EventosHoyCampus(MycroftSkill):
 
                     for event in data['eventos']:
 
+                        self.speak(fecha_de_hoy)
+                        self.speak(event['fecha'])
+
                         if event['fecha'] == fecha_de_hoy:
                             hora = int(event['hora'].split(":")[0])
                             minuto = int(event['hora'].split(":")[1])
