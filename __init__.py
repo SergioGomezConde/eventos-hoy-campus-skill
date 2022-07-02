@@ -21,13 +21,13 @@ class EventosHoyCampus(MycroftSkill):
             # Lectura de la informacion del fichero JSON
             with open(ficheroJSON) as ficheroEventos:
                 data = json.load(ficheroEventos)
-                if len(data['siguiente_evento']) > 0:
+                if len(data['eventos_hoy']) > 0:
                     now = datetime.now()
 
                     for event in data['eventos_hoy']:
                         hora = int(event['hora'].split(":")[0])
                         minuto = int(event['hora'].split(":")[1])
-                        if ((hora > now.hour) or ((hora == now.hour) and (hora > now.minute))):
+                        if (hora > now.hour) or ((hora == now.hour) and (hora > now.minute)):
                             self.speak("Hoy a las " + event['hora'] + " tienes " + event['nombre'])
 
                 else:
