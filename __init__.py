@@ -23,12 +23,16 @@ class EventosHoyCampus(MycroftSkill):
                 data = json.load(ficheroEventos)
                 if len(data['eventos']) > 0:
                     now = datetime.now()
+                    fecha_de_hoy = now.day + "/" + now.month + "/" + now.year
 
                     for event in data['eventos']:
-                        hora = int(event['hora'].split(":")[0])
-                        minuto = int(event['hora'].split(":")[1])
-                        if (hora > now.hour) or ((hora == now.hour) and (hora > now.minute)):
-                            self.speak("Hoy a las " + event['hora'] + " tienes " + event['nombre'])
+
+                        if event[fecha_de_hoy] == fecha_de_hoy:
+                            hora = int(event['hora'].split(":")[0])
+                            minuto = int(event['hora'].split(":")[1])
+
+                            if (hora > now.hour) or ((hora == now.hour) and (minuto > now.minute)):
+                                self.speak("Hoy a las " + event['hora'] + " tienes " + event['nombre'])
 
                 else:
                     self.speak("Hoy no tienes ningún evento")
