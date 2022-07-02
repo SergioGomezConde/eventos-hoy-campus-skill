@@ -23,7 +23,7 @@ class EventosHoyCampus(MycroftSkill):
                 data = json.load(ficheroEventos)
                 if len(data['eventos']) > 0:
                     now = datetime.now()
-                    fecha_de_hoy = now.day + "/" + now.month + "/" + now.year
+                    fecha_de_hoy = str(now.day) + "/" + str(now.month) + "/" + str(now.year)
 
                     for event in data['eventos']:
 
