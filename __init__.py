@@ -49,6 +49,8 @@ class EventosHoyCampus(MycroftSkill):
                 else:
                     self.speak("Hoy no tienes ningún evento")
 
+            ficheroEventos.close()
+
         else:
             self.speak("Lo siento, no dispongo de esa información")
 
