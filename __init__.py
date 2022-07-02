@@ -37,8 +37,6 @@ class EventosHoyCampus(MycroftSkill):
 
                     fecha_de_hoy = dia + "/" + mes + "/" + str(now.year)
 
-                    self.speak(fecha_de_hoy)
-
                     for event in data['eventos']:
 
                         if event['fecha'] == fecha_de_hoy:
