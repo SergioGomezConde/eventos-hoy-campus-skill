@@ -21,10 +21,10 @@ class EventosHoyCampus(MycroftSkill):
             # Lectura de la informacion del fichero JSON
             with open(ficheroJSON) as ficheroEventos:
                 data = json.load(ficheroEventos)
-                if len(data['eventos_hoy']) > 0:
+                if len(data['eventos']) > 0:
                     now = datetime.now()
 
-                    for event in data['eventos_hoy']:
+                    for event in data['eventos']:
                         hora = int(event['hora'].split(":")[0])
                         minuto = int(event['hora'].split(":")[1])
                         if (hora > now.hour) or ((hora == now.hour) and (hora > now.minute)):
