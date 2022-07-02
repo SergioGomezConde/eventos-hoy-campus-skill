@@ -30,10 +30,10 @@ class EventosHoyCampus(MycroftSkill):
                         dia = str(now.day)
 
                     if now.month < 10:
-                        mes = "0" + str(now.day)
+                        mes = "0" + str(now.month)
 
                     else:
-                        mes = str(now.day)
+                        mes = str(now.month)
 
                     fecha_de_hoy = dia + "/" + mes + "/" + str(now.year)
 
